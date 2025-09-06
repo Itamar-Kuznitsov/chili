@@ -59,6 +59,7 @@ async def startup_event():
     print("🚀 Chili API is starting up...")
     print(f"📁 Upload directory: {settings.UPLOAD_DIR}")
     print(f"🔗 Database URL: {settings.DATABASE_URL[:20]}...")
+    print(f"🔑 Secret key set: {'Yes' if settings.SECRET_KEY != 'your-secret-key-change-this-in-production' else 'No (using default)'}")
     print("✅ Startup complete!")
 
 # Root endpoint
