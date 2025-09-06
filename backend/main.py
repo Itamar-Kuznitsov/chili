@@ -23,8 +23,13 @@ from crud import (
 )
 from config import settings
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
+# Create database tables (with error handling)
+try:
+    Base.metadata.create_all(bind=engine)
+    print("✅ Database tables created successfully")
+except Exception as e:
+    print(f"⚠️  Warning: Could not create database tables: {e}")
+    print("This might be normal if the database is not yet available")
 
 app = FastAPI(title="Chili API", version="1.0.0")
 
@@ -42,6 +47,24 @@ os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
 
 # Mount static files
 app.mount("/uploads", StaticFiles(directory=settings.UPLOAD_DIR), name="uploads")
+
+# Simple health check endpoint
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "message": "Chili API is running"}
+
+# Startup event
+@app.on_event("startup")
+async def startup_event():
+    print("🚀 Chili API is starting up...")
+    print(f"📁 Upload directory: {settings.UPLOAD_DIR}")
+    print(f"🔗 Database URL: {settings.DATABASE_URL[:20]}...")
+    print("✅ Startup complete!")
+
+# Root endpoint
+@app.get("/")
+def root():
+    return {"message": "Welcome to Chili API", "docs": "/docs"}
 
 @app.post("/auth/register", response_model=UserSchema)
 def register(user: UserCreate, db: Session = Depends(get_db)):
