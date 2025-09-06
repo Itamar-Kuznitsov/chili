@@ -14,7 +14,7 @@ from schemas import (
     PostCreate, Post as PostSchema,
     Token, FollowCreate, FollowResponse
 )
-from auth import authenticate_user, create_access_token, get_current_user, ACCESS_TOKEN_EXPIRE_MINUTES
+from auth import authenticate_user, create_access_token, get_current_user
 from crud import (
     create_user, get_user, get_user_by_username, get_user_by_email,
     create_post, get_posts_by_user, get_feed_posts, get_post,
@@ -68,7 +68,7 @@ def login(username: str = Form(...), password: str = Form(...), db: Session = De
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
