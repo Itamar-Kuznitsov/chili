@@ -5,7 +5,7 @@ Database setup script for Chili
 import os
 import sys
 from sqlalchemy import create_engine, text
-from config import settings
+from .config import settings
 
 def create_database():
     """Create the database if it doesn't exist"""

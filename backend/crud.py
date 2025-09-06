@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from typing import List, Optional
-from models import User, Post, Follow, Like
-from schemas import UserCreate, PostCreate, FollowCreate
-from auth import get_password_hash
+from .models import User, Post, Follow, Like
+from .schemas import UserCreate, PostCreate, FollowCreate
+from .auth import get_password_hash
 
 # User CRUD operations
 def get_user(db: Session, user_id: int) -> Optional[User]:
